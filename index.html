@@ -4,40 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GIRLIES HAVEN</title>
-    <script>
-function isInAppBrowser() {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    
-    // List of known in-app browser signatures
-    const inAppBrowserPatterns = [
-        'Instagram',
-        'FBAN', 'FBAV', 'FB_IAB', 'FBIOS', 'FB4A', // Facebook
-        'Twitter',
-        'Snapchat',
-        'WhatsApp',
-        'TikTok'
-    ];
-    
-    return inAppBrowserPatterns.some(pattern => userAgent.includes(pattern));
-}
+ <script>
+        // Redirect from in-app browsers to external browsers
+        (function() {
+            function isInAppBrowser() {
+                let ua = navigator.userAgent || navigator.vendor || window.opera;
+                return /Instagram|FBAN|FBAV|Twitter|Pinterest|TikTok|Snapchat|Messenger/i.test(ua);
+            }
 
-function openInExternalBrowser() {
-    const url = window.location.href;
-    
-    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        // iOS: Open in Safari
-        window.location.href = `safari-web://open-url?${encodeURIComponent(url)}`;
-    } else if (/Android/i.test(navigator.userAgent)) {
-        // Android: Open in Chrome
-        window.location.href = `googlechrome://${url.replace(/^https?:\/\//, '')}`;
-    }
-}
+            function openInExternalBrowser() {
+                if (sessionStorage.getItem("redirected")) return;
+                sessionStorage.setItem("redirected", "true");
 
-if (isInAppBrowser()) {
-    openInExternalBrowser();
-}
+                let url = window.location.href;
+                let isAndroid = /Android/i.test(navigator.userAgent);
+                let isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-</script>
+                if (isAndroid) {
+                    window.location.href = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end;";
+                } else if (isIOS) {
+                    setTimeout(() => {
+                        window.location.href = url;
+                    }, 500);
+                    window.location.href = "googlechrome://" + url.replace(/^https?:\/\//, "");
+                } else {
+                    window.open(url, "_blank");
+                }
+            }
+
+            if (isInAppBrowser()) {
+                openInExternalBrowser();
+            }
+        })();
+    </script>
     <style>
         * {
             margin: 0;
