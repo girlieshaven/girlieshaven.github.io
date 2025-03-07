@@ -16,19 +16,40 @@
             background: linear-gradient(135deg, #f9ebfc, #d8b8e8);
             color: #4a2c40;
             min-height: 100vh;
+            overflow-x: hidden;
+            animation: gradientBG 15s ease infinite;
+            background-size: 200% 200%;
+            position: relative;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .content-wrapper {
             flex: 1;
             display: flex;
             flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Only blur the container content */
+        .container {
             transition: filter 0.3s ease;
         }
 
-        .content-wrapper.blur {
+        .container.blur {
             filter: blur(5px);
         }
 
@@ -43,6 +64,12 @@
             top: 0;
             z-index: 10;
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
         }
 
         header h1 {
@@ -62,6 +89,9 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            min-height: calc(100vh - 120px);
+            margin-top: 60px;
+            margin-bottom: 60px;
         }
 
         .container {
@@ -76,9 +106,16 @@
         .subtitle {
             color: #8b5e83;
             font-size: 1.9em;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             font-style: italic;
             text-shadow: 0 0 8px rgba(255, 182, 193, 0.3);
+        }
+
+        .countdown {
+            color: #ff69b4;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: bold;
         }
 
         .button-stack {
@@ -107,8 +144,18 @@
             box-shadow: 0 10px 30px rgba(139, 94, 131, 0.5);
             background-size: 200% 200%;
             z-index: 1;
-            --mouse-x: 0;
-            --mouse-y: 0;
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .reward-btn:nth-child(1) { animation-delay: 0.1s; }
+        .reward-btn:nth-child(2) { animation-delay: 0.2s; }
+        .reward-btn:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .reward-btn:hover {
@@ -140,6 +187,22 @@
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
+        .reward-btn .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
         /* Shein Button */
         .shein-btn {
             background: linear-gradient(45deg, #ff4081, #f50057, #ff4081);
@@ -167,28 +230,6 @@
 
         .shein-btn:hover::before {
             opacity: 0.8;
-        }
-
-        .shein-btn::after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, rgba(255, 64, 129, 0.4), transparent);
-            opacity: 0;
-            transform: translate(var(--mouse-x), var(--mouse-y)) translate(-50%, -50%);
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .shein-btn:hover::after {
-            opacity: 0.7;
-        }
-
-        @keyframes sheinPulse {
-            0% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(255, 64, 129, 0.5); }
-            50% { background-position: 100% 50%; box-shadow: 0 15px 40px rgba(255, 64, 129, 0.7); }
-            100% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(255, 64, 129, 0.5); }
         }
 
         /* Adidas Button */
@@ -221,28 +262,6 @@
             height: 1000px;
         }
 
-        .adidas-btn::after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, rgba(0, 123, 255, 0.4), transparent);
-            opacity: 0;
-            transform: translate(var(--mouse-x), var(--mouse-y)) translate(-50%, -50%);
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .adidas-btn:hover::after {
-            opacity: 0.7;
-        }
-
-        @keyframes adidasPulse {
-            0% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(0, 123, 255, 0.5); }
-            50% { background-position: 100% 50%; box-shadow: 0 15px 40px rgba(0, 123, 255, 0.7); }
-            100% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(0, 123, 255, 0.5); }
-        }
-
         /* Lululemon Button */
         .lululemon-btn {
             background: linear-gradient(45deg, #e0b0ff, #ba55d3, #e0b0ff);
@@ -272,20 +291,16 @@
             animation: shimmer 2s infinite;
         }
 
-        .lululemon-btn::after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, rgba(186, 85, 211, 0.4), transparent);
-            opacity: 0;
-            transform: translate(var(--mouse-x), var(--mouse-y)) translate(-50%, -50%);
-            transition: opacity 0.3s ease;
-            pointer-events: none;
+        @keyframes sheinPulse {
+            0% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(255, 64, 129, 0.5); }
+            50% { background-position: 100% 50%; box-shadow: 0 15px 40px rgba(255, 64, 129, 0.7); }
+            100% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(255, 64, 129, 0.5); }
         }
 
-        .lululemon-btn:hover::after {
-            opacity: 0.7;
+        @keyframes adidasPulse {
+            0% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(0, 123, 255, 0.5); }
+            50% { background-position: 100% 50%; box-shadow: 0 15px 40px rgba(0, 123, 255, 0.7); }
+            100% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(0, 123, 255, 0.5); }
         }
 
         @keyframes luluPulse {
@@ -294,15 +309,9 @@
             100% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(186, 85, 211, 0.5); }
         }
 
-        /* Shared Animations */
         @keyframes spinGlow {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        @keyframes swipe {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
         }
 
         @keyframes shimmer {
@@ -326,6 +335,7 @@
             max-width: 450px;
             width: 90%;
             animation: popIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+            backdrop-filter: blur(10px); /* Add backdrop blur to mask background */
         }
 
         .popup.active {
@@ -343,6 +353,22 @@
             color: #8b5e83;
             font-size: 1.2em;
             margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 80%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 15px auto;
+            overflow: hidden;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #ff69b4;
+            transition: width 2s ease;
         }
 
         .popup .popup-btn {
@@ -365,6 +391,11 @@
             justify-content: center;
         }
 
+        .popup .popup-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(139, 94, 131, 0.7);
+        }
+
         .popup .popup-btn .logo {
             width: 40px;
             height: 40px;
@@ -374,12 +405,6 @@
             background-position: center;
             background-repeat: no-repeat;
             transition: transform 0.6s ease, box-shadow 0.4s ease;
-            aspect-ratio: 1 / 1;
-        }
-
-        .popup .popup-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(139, 94, 131, 0.7);
         }
 
         .popup .popup-btn:hover .logo {
@@ -395,38 +420,12 @@
         }
 
         /* Popup Button Themes */
-        .popup-shein-btn {
-            background: linear-gradient(45deg, #ff4081, #f50057, #ff4081);
-            border: 2px solid #ff80ab;
-            animation: sheinPulse 4s ease infinite;
-        }
-
-        .popup-shein-btn .logo {
-            background-image: url('https://brandlogos.net/wp-content/uploads/2022/07/shein-logo_brandlogos.net_mxyew-512x512.png');
-            border: 2px solid #ffccd5;
-        }
-
-        .popup-adidas-btn {
-            background: linear-gradient(45deg, #007bff, #004080, #007bff);
-            border: 2px solid #66b0ff;
-            animation: adidasPulse 5s ease infinite;
-        }
-
-        .popup-adidas-btn .logo {
-            background-image: url('https://loodibee.com/wp-content/uploads/Adidas-Logo.png');
-            border: 2px solid #cce5ff;
-        }
-
-        .popup-lululemon-btn {
-            background: linear-gradient(45deg, #e0b0ff, #ba55d3, #e0b0ff);
-            border: 2px solid #f3d9ff;
-            animation: luluPulse 6s ease infinite;
-        }
-
-        .popup-lululemon-btn .logo {
-            background-image: url('https://1000logos.net/wp-content/uploads/2017/08/Lululemon-Logo.png');
-            border: 2px solid #f9ecff;
-        }
+        .popup-shein-btn { background: linear-gradient(45deg, #ff4081, #f50057, #ff4081); border: 2px solid #ff80ab; animation: sheinPulse 4s ease infinite; }
+        .popup-shein-btn .logo { background-image: url('https://brandlogos.net/wp-content/uploads/2022/07/shein-logo_brandlogos.net_mxyew-512x512.png'); border: 2px solid #ffccd5; }
+        .popup-adidas-btn { background: linear-gradient(45deg, #007bff, #004080, #007bff); border: 2px solid #66b0ff; animation: adidasPulse 5s ease infinite; }
+        .popup-adidas-btn .logo { background-image: url('https://loodibee.com/wp-content/uploads/Adidas-Logo.png'); border: 2px solid #cce5ff; }
+        .popup-lululemon-btn { background: linear-gradient(45deg, #e0b0ff, #ba55d3, #e0b0ff); border: 2px solid #f3d9ff; animation: luluPulse 6s ease infinite; }
+        .popup-lululemon-btn .logo { background-image: url('https://1000logos.net/wp-content/uploads/2017/08/Lululemon-Logo.png'); border: 2px solid #f9ecff; }
 
         @keyframes popIn {
             0% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
@@ -441,12 +440,20 @@
             text-align: center;
             border-top: 3px solid #ffb6c1;
             width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
             box-shadow: 0 -4px 15px rgba(212, 175, 55, 0.2);
+            z-index: 10;
         }
 
         footer p {
             color: #8b5e83;
             font-size: 1.1em;
+        }
+
+        .red-text {
+            color: red;
         }
 
         /* Background Animation */
@@ -457,8 +464,9 @@
             width: 100%;
             height: 100%;
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="rgba(255,182,193,0.1)" d="M50 20 C60 10, 70 20, 80 30 C90 40, 90 60, 80 70 C70 80, 60 90, 50 80 C40 90, 30 80, 20 70 C10 60, 10 40, 20 30 C30 20, 40 10, 50 20 Z"/></svg>') repeat;
-            z-index: -2; /* Behind particles */
+            z-index: 0;
             animation: floatHearts 15s infinite linear;
+            will-change: background-position;
         }
 
         #particle-canvas {
@@ -467,8 +475,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: 0;
             pointer-events: none;
+            will-change: transform;
         }
 
         @keyframes floatHearts {
@@ -476,27 +485,29 @@
             100% { background-position: 100px 100px; }
         }
 
-        /* Responsive Design */
+        /* Enhanced Responsive Design */
         @media (max-width: 768px) {
             header { padding: 15px 20px; }
             header h1 { font-size: 2em; }
-            main { padding: 15px; }
-            .subtitle { font-size: 1.5em; margin-bottom: 30px; }
+            main { padding: 15px; min-height: calc(100vh - 100px); margin-top: 50px; margin-bottom: 50px; }
+            .subtitle { font-size: 1.5em; margin-bottom: 15px; }
+            .countdown { font-size: 1em; }
             .reward-btn { padding: 25px; font-size: 1.4em; max-width: 90%; }
             .reward-btn .logo { width: 60px; height: 60px; margin-right: 20px; }
             .popup { padding: 20px; max-width: 350px; }
             .popup h2 { font-size: 1.5em; }
             .popup p { font-size: 1em; }
             .popup .popup-btn { padding: 12px 20px; font-size: 1em; }
-            .popup .popup-btn .logo { width: 35px; height: 35px; margin-right: 15px; }
+            .popup .popup-btn .logo { width: 35px; height: 35px; }
             footer { padding: 20px; }
         }
 
         @media (max-width: 480px) {
             header { padding: 10px 15px; }
             header h1 { font-size: 1.6em; }
-            main { padding: 10px; }
-            .subtitle { font-size: 1.2em; margin-bottom: 20px; }
+            main { padding: 10px; min-height: calc(100vh - 80px); margin-top: 40px; margin-bottom: 40px; }
+            .subtitle { font-size: 1.2em; margin-bottom: 10px; }
+            .countdown { font-size: 0.9em; }
             .button-stack { gap: 30px; }
             .reward-btn { padding: 15px; font-size: 1.1em; max-width: 100%; }
             .reward-btn .logo { width: 50px; height: 50px; margin-right: 15px; }
@@ -504,7 +515,7 @@
             .popup h2 { font-size: 1.3em; }
             .popup p { font-size: 0.9em; }
             .popup .popup-btn { padding: 10px 15px; font-size: 0.9em; }
-            .popup .popup-btn .logo { width: 30px; height: 30px; margin-right: 10px; }
+            .popup .popup-btn .logo { width: 30px; height: 30px; }
             footer { padding: 15px; }
             footer p { font-size: 0.9em; }
         }
@@ -517,34 +528,38 @@
         <header>
             <h1>GIRLIES HAVEN</h1>
         </header>
-        <main>
-            <div class="container">
-                <p class="subtitle">Unlock your complimentary gift card today at no cost!</p>
-                <div class="button-stack">
-                    <a href="https://giftcardhaven.github.io/shein/" class="reward-btn shein-btn" data-popup="shein-popup">
-                        <div class="logo"></div>
-                        <span>$750 Shein Gift Card</span>
-                    </a>
-                    <a href="https://giftcardhaven.github.io/adidas/" class="reward-btn adidas-btn" data-popup="adidas-popup">
-                        <div class="logo"></div>
-                        <span>$100 Adidas Gift Card</span>
-                    </a>
-                    <a href="https://giftcardhaven.github.io/lululemon/" class="reward-btn lululemon-btn" data-popup="lululemon-popup">
-                        <div class="logo"></div>
-                        <span>$500 Lululemon Gift Card</span>
-                    </a>
+        <div class="main-content">
+            <main>
+                <div class="container">
+                    <p class="subtitle">Unlock your complimentary gift card today at no cost!</p>
+                    <div class="countdown" id="countdown">Offer ends in: Calculating...</div>
+                    <div class="button-stack">
+                        <a href="https://giftcardhaven.github.io/shein/" class="reward-btn shein-btn" data-popup="shein-popup">
+                            <div class="logo"></div>
+                            <span>$750 Shein Gift Card</span>
+                        </a>
+                        <a href="https://giftcardhaven.github.io/adidas/" class="reward-btn adidas-btn" data-popup="adidas-popup">
+                            <div class="logo"></div>
+                            <span>$100 Adidas Gift Card</span>
+                        </a>
+                        <a href="https://giftcardhaven.github.io/lululemon/" class="reward-btn lululemon-btn" data-popup="lululemon-popup">
+                            <div class="logo"></div>
+                            <span>$500 Lululemon Gift Card</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </main>
-        <footer>
-            <p>Please use an external browser like Chrome or Safari for the best experience.</p>
-        </footer>
+            </main>
+            <footer>
+                <p class="red-text">Please use an external browser like Chrome or Safari for the best experience.</p>
+            </footer>
+        </div>
     </div>
 
     <!-- Popups -->
     <div id="shein-popup" class="popup">
         <h2>Shein Exclusive!</h2>
         <p>Claim your $750 Shein Gift Card now and shop the latest trends!</p>
+        <div class="progress-bar"><div class="progress"></div></div>
         <a href="https://giftcardhaven.github.io/shein/" class="popup-btn popup-shein-btn">
             <div class="logo"></div>
             <span>$750 Shein Gift Card</span>
@@ -553,6 +568,7 @@
     <div id="adidas-popup" class="popup">
         <h2>Adidas Style!</h2>
         <p>Grab a $100 Adidas Gift Card and step up your fashion game!</p>
+        <div class="progress-bar"><div class="progress"></div></div>
         <a href="https://giftcardhaven.github.io/adidas/" class="popup-btn popup-adidas-btn">
             <div class="logo"></div>
             <span>$100 Adidas Gift Card</span>
@@ -561,6 +577,7 @@
     <div id="lululemon-popup" class="popup">
         <h2>Lululemon Bliss!</h2>
         <p>Unlock a $500 Lululemon Gift Card for ultimate luxury!</p>
+        <div class="progress-bar"><div class="progress"></div></div>
         <a href="https://giftcardhaven.github.io/lululemon/" class="popup-btn popup-lululemon-btn">
             <div class="logo"></div>
             <span>$500 Lululemon Gift Card</span>
@@ -568,16 +585,52 @@
     </div>
 
     <script>
-        // Button Click and Mouse Move Listeners
+        // Countdown Timer to March 25, 2025
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            const endDate = new Date('March 25, 2025 23:59:59').getTime();
+
+            const interval = setInterval(() => {
+                const now = new Date().getTime();
+                const timeLeft = endDate - now;
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    countdownElement.textContent = 'Offer Expired!';
+                    return;
+                }
+
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                countdownElement.textContent = `Offer ends in: ${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+        startCountdown();
+
+        // Button Click, Ripple, and Mouse Move Listeners
         const buttons = document.querySelectorAll('.reward-btn');
         buttons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
+                const ripple = document.createElement('span');
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                ripple.classList.add('ripple');
+                button.appendChild(ripple);
                 button.style.transform = 'scale(0.95)';
                 setTimeout(() => {
+                    ripple.remove();
                     button.style.transform = 'scale(1)';
                     window.location.href = button.getAttribute('href');
-                }, 200);
+                }, 600);
             });
 
             button.addEventListener('mousemove', (e) => {
@@ -639,9 +692,9 @@
             canvas.height = window.innerHeight;
         });
 
-        // Popup Logic with Dynamic CTA
+        // Popup Logic with Progress Bar
         const popups = document.querySelectorAll('.popup');
-        const contentWrapper = document.querySelector('.content-wrapper');
+        const container = document.querySelector('.container'); // Target container for blur
         const buttonData = [
             { id: 'shein-popup', index: 0 },
             { id: 'adidas-popup', index: 1 },
@@ -654,10 +707,15 @@
             const popupId = buttonData[index].id;
             const popup = document.getElementById(popupId);
             popup.classList.add('active');
-            contentWrapper.classList.add('blur');
+            container.classList.add('blur'); // Apply blur only to container
             popup.style.animation = 'none';
             popup.offsetHeight;
             popup.style.animation = 'popIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards';
+
+            // Progress Bar Animation
+            const progress = popup.querySelector('.progress');
+            progress.style.width = '0%';
+            setTimeout(() => { progress.style.width = '100%'; }, 100);
 
             // Dynamic CTA Text
             const ctaPhrases = ['Claim Now!', 'Shop Today!', 'Don’t Miss Out!'];
@@ -677,7 +735,7 @@
                 clearInterval(activePopup.dataset.ctaInterval);
             }
             popups.forEach(popup => popup.classList.remove('active'));
-            contentWrapper.classList.remove('blur');
+            container.classList.remove('blur'); // Remove blur from container
             currentIndex = (currentIndex + 1) % buttonData.length;
             setTimeout(() => showPopup(currentIndex), 5000);
         }
