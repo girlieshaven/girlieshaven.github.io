@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GIRLIES HAVEN</title>
- <script>
+    <script>
         // Redirect from in-app browsers to external browsers
         (function() {
             function isInAppBrowser() {
@@ -46,7 +46,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f9ebfc, #d8b8e8);
+            background: linear-gradient(135deg, #ffe6f0, #f9ccff);
             color: #4a2c40;
             min-height: 100vh;
             overflow-x: hidden;
@@ -55,12 +55,58 @@
             position: relative;
             display: flex;
             flex-direction: column;
+            will-change: background-position;
         }
 
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 182, 193, 0.2) 0%, transparent 70%);
+            z-index: 0;
+            animation: pulseBG 10s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseBG {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .sparkles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.8), transparent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkleFloat 8s infinite ease-in-out;
+            will-change: transform, opacity;
+        }
+
+        @keyframes sparkleFloat {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-20vh) scale(1); opacity: 0; }
         }
 
         .content-wrapper {
@@ -77,7 +123,6 @@
             flex-direction: column;
         }
 
-        /* Only blur the container content */
         .container {
             transition: filter 0.3s ease;
         }
@@ -86,18 +131,72 @@
             filter: blur(5px);
         }
 
-        /* Header */
         header {
-            background: rgba(255, 235, 245, 0.9);
-            padding: 20px 40px;
+            background: linear-gradient(90deg, rgba(255, 235, 245, 0.95), rgba(255, 182, 193, 0.85), rgba(255, 235, 245, 0.95));
+            padding: 35px 40px;
             text-align: center;
-            border-bottom: 3px solid #ffb6c1;
+            border-bottom: 5px solid #ffb6c1;
             width: 100%;
             position: fixed;
             top: 0;
             z-index: 10;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
             animation: slideIn 0.5s ease-out;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            opacity: 0.5;
+            animation: shimmer 6s infinite linear;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        header h1 {
+            font-size: 3.5em;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, #ff69b4, #dda0dd, #ff69b4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-style: italic;
+            position: relative;
+            padding: 0 25px;
+            text-shadow: 0 0 12px rgba(255, 182, 193, 0.6);
+        }
+
+        header h1::before, header h1::after {
+            content: '✨';
+            position: absolute;
+            font-size: 1.4em;
+            color: #ff69b4;
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        header h1::before {
+            left: -30px;
+            animation-delay: 0.5s;
+        }
+
+        header h1::after {
+            right: -30px;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
         @keyframes slideIn {
@@ -105,26 +204,15 @@
             to { transform: translateY(0); }
         }
 
-        header h1 {
-            font-size: 2.8em;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            background: linear-gradient(90deg, #ff69b4, #dda0dd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-style: italic;
-        }
-
-        /* Main Body */
         main {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            min-height: calc(100vh - 120px);
-            margin-top: 60px;
-            margin-bottom: 60px;
+            min-height: calc(100vh - 160px);
+            margin-top: 80px;
+            margin-bottom: 70px;
         }
 
         .container {
@@ -136,6 +224,20 @@
             align-items: center;
         }
 
+        .tagline {
+            color: #ff69b4;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-style: italic;
+            text-shadow: 0 0 10px rgba(255, 182, 193, 0.5);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .subtitle {
             color: #8b5e83;
             font-size: 1.9em;
@@ -145,10 +247,71 @@
         }
 
         .countdown {
-            color: #ff69b4;
-            font-size: 1.2em;
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
             font-weight: bold;
+            position: relative;
+        }
+
+        .countdown::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 110%;
+            height: 110%;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.2), transparent);
+            border-radius: 15px;
+            z-index: -1;
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        .countdown-unit {
+            background: linear-gradient(135deg, #ff69b4, #f50057);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 1.4em;
+            width: 70px; /* Fixed width for uniformity */
+            height: 60px; /* Fixed height for uniformity */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown-unit::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            opacity: 0.4;
+            animation: shimmer 4s infinite linear;
+            pointer-events: none;
+        }
+
+        .countdown-unit span {
+            display: block;
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            opacity: 0.9;
         }
 
         .button-stack {
@@ -173,22 +336,12 @@
             cursor: pointer;
             text-decoration: none;
             overflow: hidden;
-            transition: all 0.4s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             box-shadow: 0 10px 30px rgba(139, 94, 131, 0.5);
+            background: linear-gradient(45deg, #ff4081, #f50057, #ff4081);
             background-size: 200% 200%;
-            z-index: 1;
-            opacity: 1;
-            transform: translateY(0);
-            animation: fadeInUp 0.5s ease-out forwards;
-        }
-
-        .reward-btn:nth-child(1) { animation-delay: 0.1s; }
-        .reward-btn:nth-child(2) { animation-delay: 0.2s; }
-        .reward-btn:nth-child(3) { animation-delay: 0.3s; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            animation: sheinPulse 4s ease infinite;
+            will-change: transform, box-shadow;
         }
 
         .reward-btn:hover {
@@ -201,11 +354,11 @@
             height: 80px;
             margin-right: 30px;
             border-radius: 50%;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
+            background: url('https://brandlogos.net/wp-content/uploads/2022/07/shein-logo_brandlogos.net_mxyew-512x512.png') center/contain no-repeat;
+            border: 4px solid #ffccd5;
             transition: transform 0.6s ease, box-shadow 0.4s ease;
             aspect-ratio: 1 / 1;
+            will-change: transform;
         }
 
         .reward-btn:hover .logo {
@@ -214,7 +367,6 @@
         }
 
         .reward-btn span {
-            z-index: 1;
             font-weight: bold;
             letter-spacing: 2px;
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -230,25 +382,10 @@
         }
 
         @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+            to { transform: scale(4); opacity: 0; }
         }
 
-        /* Shein Button */
-        .shein-btn {
-            background: linear-gradient(45deg, #ff4081, #f50057, #ff4081);
-            border: 4px solid #ff80ab;
-            animation: sheinPulse 4s ease infinite;
-        }
-
-        .shein-btn .logo {
-            background-image: url('https://brandlogos.net/wp-content/uploads/2022/07/shein-logo_brandlogos.net_mxyew-512x512.png');
-            border: 4px solid #ffccd5;
-        }
-
-        .shein-btn::before {
+        .reward-btn::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -259,69 +396,28 @@
             opacity: 0;
             transition: opacity 0.5s ease;
             animation: spinGlow 4s infinite linear;
+            will-change: opacity;
         }
 
-        .shein-btn:hover::before {
+        .reward-btn:hover::before {
             opacity: 0.8;
         }
 
-        /* Adidas Button */
-        .adidas-btn {
-            background: linear-gradient(45deg, #007bff, #004080, #007bff);
-            border: 4px solid #66b0ff;
-            animation: adidasPulse 5s ease infinite;
-        }
-
-        .adidas-btn .logo {
-            background-image: url('https://loodibee.com/wp-content/uploads/Adidas-Logo.png');
-            border: 4px solid #cce5ff;
-        }
-
-        .adidas-btn::before {
+        .reward-btn::after {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
+            inset: -10px;
+            border-radius: 40px;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.3), transparent);
+            filter: blur(15px);
+            animation: glowPulse 3s ease-in-out infinite;
+            z-index: -1;
+            will-change: opacity;
         }
 
-        .adidas-btn:hover::before {
-            width: 1000px;
-            height: 1000px;
-        }
-
-        /* Lululemon Button */
-        .lululemon-btn {
-            background: linear-gradient(45deg, #e0b0ff, #ba55d3, #e0b0ff);
-            border: 4px solid #f3d9ff;
-            animation: luluPulse 6s ease infinite;
-        }
-
-        .lululemon-btn .logo {
-            background-image: url('https://1000logos.net/wp-content/uploads/2017/08/Lululemon-Logo.png');
-            border: 4px solid #f9ecff;
-        }
-
-        .lululemon-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .lululemon-btn:hover::before {
-            opacity: 1;
-            animation: shimmer 2s infinite;
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
         }
 
         @keyframes sheinPulse {
@@ -330,29 +426,11 @@
             100% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(255, 64, 129, 0.5); }
         }
 
-        @keyframes adidasPulse {
-            0% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(0, 123, 255, 0.5); }
-            50% { background-position: 100% 50%; box-shadow: 0 15px 40px rgba(0, 123, 255, 0.7); }
-            100% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(0, 123, 255, 0.5); }
-        }
-
-        @keyframes luluPulse {
-            0% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(186, 85, 211, 0.5); }
-            50% { background-position: 100% 50%; box-shadow: 0 15px 40px rgba(186, 85, 211, 0.7); }
-            100% { background-position: 0% 50%; box-shadow: 0 10px 30px rgba(186, 85, 211, 0.5); }
-        }
-
         @keyframes spinGlow {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        /* Popup Styles */
         .popup {
             display: none;
             position: fixed;
@@ -368,7 +446,8 @@
             max-width: 450px;
             width: 90%;
             animation: popIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-            backdrop-filter: blur(10px); /* Add backdrop blur to mask background */
+            backdrop-filter: blur(10px);
+            will-change: transform, opacity;
         }
 
         .popup.active {
@@ -388,6 +467,13 @@
             margin-bottom: 20px;
         }
 
+        .popup .red-text {
+            color: red;
+            font-size: 1em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
         .progress-bar {
             width: 80%;
             height: 10px;
@@ -398,14 +484,14 @@
         }
 
         .progress {
-            width: 0%;
+            width: 0;
             height: 100%;
             background: #ff69b4;
             transition: width 2s ease;
+            will-change: width;
         }
 
-        .popup .popup-btn {
-            position: relative;
+        .popup-btn {
             display: inline-flex;
             align-items: center;
             padding: 15px 25px;
@@ -415,50 +501,42 @@
             border-radius: 20px;
             cursor: pointer;
             text-decoration: none;
-            overflow: hidden;
-            transition: all 0.4s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             box-shadow: 0 5px 15px rgba(139, 94, 131, 0.5);
+            background: linear-gradient(45deg, #ff4081, #f50057, #ff4081);
             background-size: 200% 200%;
-            z-index: 1;
+            animation: sheinPulse 4s ease infinite;
             width: 100%;
             justify-content: center;
+            will-change: transform, box-shadow;
         }
 
-        .popup .popup-btn:hover {
+        .popup-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 10px 25px rgba(139, 94, 131, 0.7);
         }
 
-        .popup .popup-btn .logo {
+        .popup-btn .logo {
             width: 40px;
             height: 40px;
             margin-right: 15px;
             border-radius: 50%;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
+            background: url('https://brandlogos.net/wp-content/uploads/2022/07/shein-logo_brandlogos.net_mxyew-512x512.png') center/contain no-repeat;
+            border: 2px solid #ffccd5;
             transition: transform 0.6s ease, box-shadow 0.4s ease;
+            will-change: transform;
         }
 
-        .popup .popup-btn:hover .logo {
+        .popup-btn:hover .logo {
             transform: scale(1.15) rotate(20deg);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
         }
 
-        .popup .popup-btn span {
-            z-index: 1;
+        .popup-btn span {
             font-weight: bold;
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
-
-        /* Popup Button Themes */
-        .popup-shein-btn { background: linear-gradient(45deg, #ff4081, #f50057, #ff4081); border: 2px solid #ff80ab; animation: sheinPulse 4s ease infinite; }
-        .popup-shein-btn .logo { background-image: url('https://brandlogos.net/wp-content/uploads/2022/07/shein-logo_brandlogos.net_mxyew-512x512.png'); border: 2px solid #ffccd5; }
-        .popup-adidas-btn { background: linear-gradient(45deg, #007bff, #004080, #007bff); border: 2px solid #66b0ff; animation: adidasPulse 5s ease infinite; }
-        .popup-adidas-btn .logo { background-image: url('https://loodibee.com/wp-content/uploads/Adidas-Logo.png'); border: 2px solid #cce5ff; }
-        .popup-lululemon-btn { background: linear-gradient(45deg, #e0b0ff, #ba55d3, #e0b0ff); border: 2px solid #f3d9ff; animation: luluPulse 6s ease infinite; }
-        .popup-lululemon-btn .logo { background-image: url('https://1000logos.net/wp-content/uploads/2017/08/Lululemon-Logo.png'); border: 2px solid #f9ecff; }
 
         @keyframes popIn {
             0% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
@@ -466,97 +544,98 @@
             100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
-        /* Footer */
         footer {
-            background: rgba(255, 235, 245, 0.9);
-            padding: 25px;
+            background: linear-gradient(90deg, rgba(255, 235, 245, 0.95), rgba(255, 182, 193, 0.85), rgba(255, 235, 245, 0.95));
+            padding: 30px;
             text-align: center;
-            border-top: 3px solid #ffb6c1;
+            border-top: 4px solid #ffb6c1;
             width: 100%;
             position: fixed;
             bottom: 0;
             left: 0;
-            box-shadow: 0 -4px 15px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 -6px 20px rgba(255, 105, 180, 0.3);
             z-index: 10;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            opacity: 0.5;
+            animation: shimmer 6s infinite linear reverse;
+            z-index: -1;
+            pointer-events: none;
         }
 
         footer p {
             color: #8b5e83;
-            font-size: 1.1em;
+            font-size: 1.2em;
+            text-shadow: 0 0 5px rgba(255, 182, 193, 0.3);
+        }
+
+        footer p.red-text {
+            color: red;
+            font-weight: bold;
         }
 
         .red-text {
             color: red;
         }
 
-        /* Background Animation */
-        .bg-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="rgba(255,182,193,0.1)" d="M50 20 C60 10, 70 20, 80 30 C90 40, 90 60, 80 70 C70 80, 60 90, 50 80 C40 90, 30 80, 20 70 C10 60, 10 40, 20 30 C30 20, 40 10, 50 20 Z"/></svg>') repeat;
-            z-index: 0;
-            animation: floatHearts 15s infinite linear;
-            will-change: background-position;
-        }
-
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            will-change: transform;
-        }
-
-        @keyframes floatHearts {
-            0% { background-position: 0 0; }
-            100% { background-position: 100px 100px; }
-        }
-
-        /* Enhanced Responsive Design */
         @media (max-width: 768px) {
-            header { padding: 15px 20px; }
-            header h1 { font-size: 2em; }
-            main { padding: 15px; min-height: calc(100vh - 100px); margin-top: 50px; margin-bottom: 50px; }
+            header { padding: 25px 20px; }
+            header h1 { font-size: 2.8em; }
+            header h1::before, header h1::after { font-size: 1.2em; left: -20px; right: -20px; }
+            main { padding: 15px; min-height: calc(100vh - 130px); margin-top: 70px; margin-bottom: 60px; }
+            .tagline { font-size: 1.2em; }
             .subtitle { font-size: 1.5em; margin-bottom: 15px; }
-            .countdown { font-size: 1em; }
+            .countdown-unit { font-size: 1.2em; width: 60px; height: 50px; padding: 8px 12px; }
+            .countdown-unit span { font-size: 0.65em; }
             .reward-btn { padding: 25px; font-size: 1.4em; max-width: 90%; }
             .reward-btn .logo { width: 60px; height: 60px; margin-right: 20px; }
             .popup { padding: 20px; max-width: 350px; }
             .popup h2 { font-size: 1.5em; }
             .popup p { font-size: 1em; }
-            .popup .popup-btn { padding: 12px 20px; font-size: 1em; }
-            .popup .popup-btn .logo { width: 35px; height: 35px; }
-            footer { padding: 20px; }
+            .popup .red-text { font-size: 0.9em; }
+            .popup-btn { padding: 12px 20px; font-size: 1em; }
+            .popup-btn .logo { width: 35px; height: 35px; }
+            footer { padding: 25px; }
+            footer p { font-size: 1em; }
+            .sparkle { width: 12px; height: 12px; }
         }
 
         @media (max-width: 480px) {
-            header { padding: 10px 15px; }
-            header h1 { font-size: 1.6em; }
-            main { padding: 10px; min-height: calc(100vh - 80px); margin-top: 40px; margin-bottom: 40px; }
+            header { padding: 20px 15px; }
+            header h1 { font-size: 2.2em; letter-spacing: 3px; }
+            header h1::before, header h1::after { font-size: 1em; left: -15px; right: -15px; }
+            main { padding: 10px; min-height: calc(100vh - 110px); margin-top: 60px; margin-bottom: 50px; }
+            .tagline { font-size: 1em; }
             .subtitle { font-size: 1.2em; margin-bottom: 10px; }
-            .countdown { font-size: 0.9em; }
+            .countdown-unit { font-size: 1em; width: 50px; height: 45px; padding: 6px 10px; }
+            .countdown-unit span { font-size: 0.6em; }
             .button-stack { gap: 30px; }
             .reward-btn { padding: 15px; font-size: 1.1em; max-width: 100%; }
             .reward-btn .logo { width: 50px; height: 50px; margin-right: 15px; }
             .popup { padding: 15px; max-width: 300px; }
             .popup h2 { font-size: 1.3em; }
             .popup p { font-size: 0.9em; }
-            .popup .popup-btn { padding: 10px 15px; font-size: 0.9em; }
-            .popup .popup-btn .logo { width: 30px; height: 30px; }
-            footer { padding: 15px; }
+            .popup .red-text { font-size: 0.8em; }
+            .popup-btn { padding: 10px 15px; font-size: 0.9em; }
+            .popup-btn .logo { width: 30px; height: 30px; }
+            footer { padding: 20px; }
             footer p { font-size: 0.9em; }
+            .sparkle { width: 10px; height: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="bg-overlay"></div>
-    <canvas id="particle-canvas"></canvas>
+    <div class="sparkles" id="sparkles"></div>
     <div class="content-wrapper">
         <header>
             <h1>GIRLIES HAVEN</h1>
@@ -564,20 +643,18 @@
         <div class="main-content">
             <main>
                 <div class="container">
+                    <p class="tagline">Your Shopping Adventure Starts Here!</p>
                     <p class="subtitle">Unlock your complimentary gift card today at no cost!</p>
-                    <div class="countdown" id="countdown">Offer ends in: Calculating...</div>
+                    <div class="countdown" id="countdown">
+                        <div class="countdown-unit" id="days"><span>Days</span></div>
+                        <div class="countdown-unit" id="hours"><span>Hours</span></div>
+                        <div class="countdown-unit" id="minutes"><span>Minutes</span></div>
+                        <div class="countdown-unit" id="seconds"><span>Seconds</span></div>
+                    </div>
                     <div class="button-stack">
-                        <a href="https://girlieshaven.github.io/shein/" class="reward-btn shein-btn" data-popup="shein-popup">
+                        <a href="https://girlieshaven.github.io/shein/" class="reward-btn" data-popup="shein-popup">
                             <div class="logo"></div>
                             <span>$750 Shein Gift Card</span>
-                        </a>
-                        <a href="https://girlieshaven.github.io/adidas/" class="reward-btn adidas-btn" data-popup="adidas-popup">
-                            <div class="logo"></div>
-                            <span>$100 Adidas Gift Card</span>
-                        </a>
-                        <a href="https://girlieshaven.github.io/lululemon/" class="reward-btn lululemon-btn" data-popup="lululemon-popup">
-                            <div class="logo"></div>
-                            <span>$500 Lululemon Gift Card</span>
                         </a>
                     </div>
                 </div>
@@ -588,74 +665,82 @@
         </div>
     </div>
 
-    <!-- Popups -->
     <div id="shein-popup" class="popup">
         <h2>Shein Exclusive!</h2>
         <p>Claim your $750 Shein Gift Card now and shop the latest trends!</p>
+        <p class="red-text">For the best experience, please use an external browser like Chrome or Safari.</p>
         <div class="progress-bar"><div class="progress"></div></div>
-        <a href="https://girlieshaven.github.io/shein/" class="popup-btn popup-shein-btn">
+        <a href="https://girlieshaven.github.io/shein/" class="popup-btn">
             <div class="logo"></div>
             <span>$750 Shein Gift Card</span>
         </a>
     </div>
-    <div id="adidas-popup" class="popup">
-        <h2>Adidas Style!</h2>
-        <p>Grab a $100 Adidas Gift Card and step up your fashion game!</p>
-        <div class="progress-bar"><div class="progress"></div></div>
-        <a href="https://girlieshaven.github.io/adidas/" class="popup-btn popup-adidas-btn">
-            <div class="logo"></div>
-            <span>$100 Adidas Gift Card</span>
-        </a>
-    </div>
-    <div id="lululemon-popup" class="popup">
-        <h2>Lululemon Bliss!</h2>
-        <p>Unlock a $500 Lululemon Gift Card for ultimate luxury!</p>
-        <div class="progress-bar"><div class="progress"></div></div>
-        <a href="https://girlieshaven.github.io/lululemon/" class="popup-btn popup-lululemon-btn">
-            <div class="logo"></div>
-            <span>$500 Lululemon Gift Card</span>
-        </a>
-    </div>
 
     <script>
-        // Countdown Timer to March 25, 2025
-        function startCountdown() {
-            const countdownElement = document.getElementById('countdown');
+        // In-app browser redirect
+        (function() {
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            if (/Instagram|FBAN|FBAV|Twitter|Pinterest|TikTok|Snapchat|Messenger/i.test(ua) && !sessionStorage.getItem("redirected")) {
+                sessionStorage.setItem("redirected", "true");
+                const url = window.location.href;
+                const isAndroid = /Android/i.test(ua);
+                const isIOS = /iPhone|iPad|iPod/i.test(ua);
+                if (isAndroid) {
+                    window.location.href = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end;";
+                } else if (isIOS) {
+                    window.location.href = "googlechrome://" + url.replace(/^https?:\/\//, "");
+                    setTimeout(() => { window.location.href = url; }, 500);
+                } else {
+                    window.open(url, "_blank");
+                }
+            }
+        })();
+
+        // Countdown Timer
+        (function() {
+            const countdown = document.getElementById('countdown');
+            const daysElement = document.getElementById('days');
+            const hoursElement = document.getElementById('hours');
+            const minutesElement = document.getElementById('minutes');
+            const secondsElement = document.getElementById('seconds');
             const endDate = new Date('March 25, 2025 23:59:59').getTime();
 
-            const interval = setInterval(() => {
-                const now = new Date().getTime();
+            function updateCountdown() {
+                const now = Date.now();
                 const timeLeft = endDate - now;
 
                 if (timeLeft <= 0) {
-                    clearInterval(interval);
-                    countdownElement.textContent = 'Offer Expired!';
+                    countdown.innerHTML = '<div class="countdown-unit">Expired!</div>';
                     return;
                 }
 
-                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                const days = Math.floor(timeLeft / 86400000);
+                const hours = Math.floor((timeLeft % 86400000) / 3600000);
+                const minutes = Math.floor((timeLeft % 3600000) / 60000);
+                const seconds = Math.floor((timeLeft % 60000) / 1000);
 
-                countdownElement.textContent = `Offer ends in: ${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-        startCountdown();
+                daysElement.innerHTML = `${days}<span>Days</span>`;
+                hoursElement.innerHTML = `${hours.toString().padStart(2, '0')}<span>Hours</span>`;
+                minutesElement.innerHTML = `${minutes.toString().padStart(2, '0')}<span>Minutes</span>`;
+                secondsElement.innerHTML = `${seconds.toString().padStart(2, '0')}<span>Seconds</span>`;
 
-        // Button Click, Ripple, and Mouse Move Listeners
-        const buttons = document.querySelectorAll('.reward-btn');
-        buttons.forEach(button => {
+                requestAnimationFrame(updateCountdown);
+            }
+
+            requestAnimationFrame(updateCountdown);
+        })();
+
+        // Button Interactions
+        (function() {
+            const button = document.querySelector('.reward-btn');
             button.addEventListener('click', (e) => {
                 e.preventDefault();
-                const ripple = document.createElement('span');
                 const rect = button.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height);
                 const x = e.clientX - rect.left - size / 2;
                 const y = e.clientY - rect.top - size / 2;
-                ripple.style.width = ripple.style.height = `${size}px`;
-                ripple.style.left = `${x}px`;
-                ripple.style.top = `${y}px`;
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;`;
                 ripple.classList.add('ripple');
                 button.appendChild(ripple);
                 button.style.transform = 'scale(0.95)';
@@ -665,134 +750,84 @@
                     window.location.href = button.getAttribute('href');
                 }, 600);
             });
+        })();
 
-            button.addEventListener('mousemove', (e) => {
-                const rect = button.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                button.style.setProperty('--mouse-x', `${x}px`);
-                button.style.setProperty('--mouse-y', `${y}px`);
+        // Sparkle Animation
+        (function() {
+            const sparklesContainer = document.getElementById('sparkles');
+            const sparkleCount = Math.max(10, Math.floor(window.innerWidth / 50)); // At least 10 sparkles
+
+            function createSparkles() {
+                sparklesContainer.innerHTML = ''; // Clear existing sparkles
+                for (let i = 0; i < sparkleCount; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.classList.add('sparkle');
+                    sparkle.style.left = `${Math.random() * 90 + 5}%`; // Avoid edges
+                    sparkle.style.animationDelay = `${Math.random() * 4}s`;
+                    sparklesContainer.appendChild(sparkle);
+                }
+            }
+
+            createSparkles(); // Initial creation
+
+            window.addEventListener('resize', () => {
+                createSparkles(); // Recreate on resize
             });
-        });
 
-        // Particle Animation
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const particles = [];
-        const particleCount = 30;
+            setInterval(() => {
+                createSparkles(); // Recreate every 8s to match animation
+            }, 8000);
+        })();
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 5 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.opacity = Math.random() * 0.5 + 0.3;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 182, 193, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+        // Popup Logic
+        (function() {
+            const popup = document.getElementById('shein-popup');
+            const container = document.querySelector('.container');
+            let ctaInterval;
 
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
+            function showPopup() {
+                popup.classList.add('active');
+                container.classList.add('blur');
+                popup.style.animation = 'popIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards';
+                const progress = popup.querySelector('.progress');
+                progress.style.width = '0';
+                requestAnimationFrame(() => { progress.style.width = '100%'; });
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-        // Popup Logic with Progress Bar
-        const popups = document.querySelectorAll('.popup');
-        const container = document.querySelector('.container'); // Target container for blur
-        const buttonData = [
-            { id: 'shein-popup', index: 0 },
-            { id: 'adidas-popup', index: 1 },
-            { id: 'lululemon-popup', index: 2 }
-        ];
-        let currentIndex = 0;
-
-        function showPopup(index) {
-            popups.forEach(popup => popup.classList.remove('active'));
-            const popupId = buttonData[index].id;
-            const popup = document.getElementById(popupId);
-            popup.classList.add('active');
-            container.classList.add('blur'); // Apply blur only to container
-            popup.style.animation = 'none';
-            popup.offsetHeight;
-            popup.style.animation = 'popIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards';
-
-            // Progress Bar Animation
-            const progress = popup.querySelector('.progress');
-            progress.style.width = '0%';
-            setTimeout(() => { progress.style.width = '100%'; }, 100);
-
-            // Dynamic CTA Text
-            const ctaPhrases = ['Claim Now!', 'Shop Today!', 'Don’t Miss Out!'];
-            const ctaSpan = popup.querySelector('.popup-btn span');
-            let ctaIndex = 0;
-            ctaSpan.textContent = ctaPhrases[ctaIndex];
-            const ctaInterval = setInterval(() => {
-                ctaIndex = (ctaIndex + 1) % ctaPhrases.length;
+                const ctaPhrases = ['Claim Now!', 'Shop Today!', 'Don’t Miss Out!'];
+                const ctaSpan = popup.querySelector('.popup-btn span');
+                let ctaIndex = 0;
                 ctaSpan.textContent = ctaPhrases[ctaIndex];
-            }, 2000);
-            popup.dataset.ctaInterval = ctaInterval;
-        }
-
-        function hidePopup() {
-            const activePopup = document.querySelector('.popup.active');
-            if (activePopup) {
-                clearInterval(activePopup.dataset.ctaInterval);
+                ctaInterval = setInterval(() => {
+                    ctaIndex = (ctaIndex + 1) % ctaPhrases.length;
+                    ctaSpan.textContent = ctaPhrases[ctaIndex];
+                }, 2000);
             }
-            popups.forEach(popup => popup.classList.remove('active'));
-            container.classList.remove('blur'); // Remove blur from container
-            currentIndex = (currentIndex + 1) % buttonData.length;
-            setTimeout(() => showPopup(currentIndex), 5000);
-        }
 
-        setTimeout(() => showPopup(currentIndex), 5000);
-
-        document.addEventListener('click', (e) => {
-            const activePopup = document.querySelector('.popup.active');
-            if (activePopup && !activePopup.contains(e.target)) {
-                hidePopup();
+            function hidePopup() {
+                clearInterval(ctaInterval);
+                popup.classList.remove('active');
+                container.classList.remove('blur');
+                setTimeout(showPopup, 5000);
             }
-        });
 
-        const popupButtons = document.querySelectorAll('.popup-btn');
-        popupButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
+            setTimeout(showPopup, 5000);
+
+            document.addEventListener('click', (e) => {
+                if (popup.classList.contains('active') && !popup.contains(e.target)) {
+                    hidePopup();
+                }
+            });
+
+            const popupBtn = document.querySelector('.popup-btn');
+            popupBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                button.style.transform = 'scale(0.95)';
+                popupBtn.style.transform = 'scale(0.95)';
                 setTimeout(() => {
-                    button.style.transform = 'scale(1)';
-                    window.location.href = button.getAttribute('href');
+                    popupBtn.style.transform = 'scale(1)';
+                    window.location.href = popupBtn.getAttribute('href');
                 }, 200);
             });
-        });
+        })();
     </script>
 </body>
 </html>
